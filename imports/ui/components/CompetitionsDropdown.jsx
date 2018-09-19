@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dropdown } from 'semantic-ui-react';
 
-export default ({competitions, onSelect, selectedCompetitions}) => (
+const CompetitionsDropdown = ({competitions, onSelect, selectedCompetitions}) => (
   <Dropdown
     options={competitions}
     selection
@@ -11,3 +11,5 @@ export default ({competitions, onSelect, selectedCompetitions}) => (
     value={selectedCompetitions}
   />
 );
+
+export default CompetitionsDropdown;
