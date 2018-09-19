@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.55",
+    "dateformat": "^3.0.3",
     "meteor-node-stubs": "^0.4.1",
     "react": "^16.5.0",
     "react-date-range": "^1.0.0-beta",

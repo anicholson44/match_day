@@ -8,13 +8,13 @@ import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
-import { fetchCompetitions } from '../imports/services/fetchData';
-import { createStore } from '../imports/store';
+import { fetchCompetitions, fetchMatches } from '../imports/services/fetchData';
+import { createStore, initialState } from '../imports/store';
 import App from '../imports/ui/App';
 
 Meteor.startup(() => {
-  fetchCompetitions().then((competitions) => {
-    const app = <Provider store={createStore({competitions})}>
+  Promise.all([fetchCompetitions(), fetchMatches(initialState)]).then(([competitions, matches]) => {
+    const app = <Provider store={createStore({competitions, matches})}>
       <App />
     </Provider>;
     render(app, document.getElementById('render-target'));
