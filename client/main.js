@@ -1,5 +1,7 @@
 import './main.html';
 import 'semantic-ui-css/semantic.min.css';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css'
 
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
