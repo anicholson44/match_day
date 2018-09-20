@@ -1,17 +1,26 @@
 import React from 'react';
+import { Grid } from 'semantic-ui-react';
 import ChangeShowScore from '../containers/ChangeShowScore';
 
-const ViewableScore = (score) =>
+const ViewableScore = ({homeTeam, awayTeam, id}) =>
   <>
-    <ChangeShowScore scoreShown />
+    <Grid.Column>
+      {homeTeam}
+    </Grid.Column>
+    <Grid.Column textAlign='center'>
+      <ChangeShowScore scoreShown id={id} />
+    </Grid.Column>
+    <Grid.Column>
+      {awayTeam}
+    </Grid.Column>
   </>;
 
-const HiddenScore = () =>
-  <ChangeShowScore />;
+const HiddenScore = ({id}) =>
+  <ChangeShowScore id={id}/>;
 
 const ScoreComponent = (showScore) => showScore ? ViewableScore : HiddenScore;
 
-const Score = ({ showScore, ...other }) =>
-  React.createElement(ScoreComponent(showScore), other);
+const Score = ({ showScore, score, ...other }) =>
+  React.createElement(ScoreComponent(showScore), { ...score, ...other });
 
 export default Score;

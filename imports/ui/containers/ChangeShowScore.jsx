@@ -1,19 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Checkbox } from 'semantic-ui-react';
-import { changeShowScore as onShowScoreChange } from '../../actions';
+import { changeShowScore } from '../../actions';
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ onShowScoreChange }, dispatch);
+const mapDispatchToProps = (dispatch, { id }) => ({
+  onShowScoreChange: (value) => dispatch(changeShowScore({id, value}))
+});
 
 const ChangeShowScore = ({
-                           key,
                            scoreShown,
                            onShowScoreChange,
                            showScoreLabel = 'Show Score',
                            hideScoreLabel = 'Hide Score'
                          }) =>
   <Checkbox label={scoreShown ? hideScoreLabel : showScoreLabel}
-            onChange={(_, { value }) => onShowScoreChange({ key, value })} />;
+            checked={scoreShown}
+            onChange={(_, { checked }) => onShowScoreChange(checked)} />;
 
 export default connect(undefined, mapDispatchToProps)(ChangeShowScore);
