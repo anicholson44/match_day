@@ -1,7 +1,7 @@
 // TODO: break into multiple reducers
 // TODO: use immutable.js
 export default (state = {}, action) => {
-  switch(action.type) {
+  switch (action.type) {
     // TODO: extract action types to constants
     case 'UPDATE_SELECTED_COMPETITIONS': {
       const { selectedCompetitions, matches } = action.payload;
@@ -13,8 +13,13 @@ export default (state = {}, action) => {
     }
     case 'CHANGE_SHOW_SCORE': {
       const { id, value } = action.payload;
-      const { showScores } = state;
-      showScores[id] = value;
+      let { showScores } = state;
+      if (id === 'all') {
+        // clear out state for individual matches when show/hide all is clicked
+        showScores = { all: value };
+      } else {
+        showScores = { ...showScores, [id]: value };
+      }
       return { ...state, showScores };
     }
     default:
