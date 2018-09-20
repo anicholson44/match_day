@@ -1,4 +1,9 @@
-import { createStore as reduxCreateStore } from 'redux';
+import {
+  createStore as reduxCreateStore,
+  applyMiddleware,
+  compose
+} from 'redux';
+import thunk from 'redux-thunk';
 import reducer from '../reducers';
 
 export const initialState = {
@@ -14,8 +19,8 @@ export const initialState = {
   showScores: {}
 };
 
-export const createStore = (state = {}) => reduxCreateStore(
-  reducer,
-  { ...initialState, ...state },
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+export const createStore = (state = {}) =>
+  compose(
+    applyMiddleware(thunk),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+  )(reduxCreateStore)(reducer, { ...initialState, ...state });

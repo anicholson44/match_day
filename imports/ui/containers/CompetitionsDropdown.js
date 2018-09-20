@@ -13,7 +13,8 @@ const mapStateToProps = ({ competitions, selectedCompetitions }) =>
   });
 
 const mapDispatchToProps = (dispatch) => ({
-  onSelect: (_, { value }) => dispatch(updateSelectCompetitions(value))
+  onSelect: (_, { value: selectedCompetitions }) =>
+    dispatch(updateSelectCompetitions({ selectedCompetitions }))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CompetitionsDropdown);

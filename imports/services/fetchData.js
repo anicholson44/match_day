@@ -66,7 +66,7 @@ const transformMatchesResponse = ({ matches }) =>
     }
   }));
 
-export const fetchMatches = ({ selectedCompetitions, startDate, endDate }) => {
+export const fetchMatches = ({ selectedCompetitions = [], startDate = new Date(), endDate = new Date() }) => {
   const queryString = [
     `competitions=${selectedCompetitions.join(',')}`,
     `dateFrom=${formatDate(startDate)}`,

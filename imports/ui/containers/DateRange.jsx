@@ -1,15 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { DateRangePicker } from 'react-date-range';
 
-import { changeDates as onChange } from '../../actions';
+import { changeDates } from '../../actions';
 
 const mapStateToProps = ({ startDate, endDate }) => ({ startDate, endDate });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ onChange }, dispatch);
+const key = 'selection';
 
-export const key = 'selection';
+const mapDispatchToProps = (dispatch) => ({
+  onChange: (dates) => dispatch(changeDates({
+    startDate: dates[key].startDate,
+    endDate: dates[key].endDate
+  }))
+});
 
 const DateRangePickerWrapper = ({ startDate = new Date(), endDate = new Date(), ...other }) =>
   <DateRangePicker ranges={[{startDate, endDate, key}]} {...other} />;
