@@ -1,6 +1,7 @@
 import arrayToObject from './arrayToObject';
 import formatDate from './formatDate';
 
+// TODO: loading dimmer when making HTTP request
 // TODO: move to server-side and secure apiKey
 const apiKey = '64ea00257ef94c51ae6bcd8ccd27a857';
 const baseUrl = 'http://api.football-data.org/v2/';
