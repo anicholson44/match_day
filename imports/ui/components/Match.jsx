@@ -3,6 +3,7 @@ import { Segment, Grid } from 'semantic-ui-react';
 import Score from './Score';
 import Team from './Team';
 
+// TODO: display date
 const Match = ({ showScore, homeTeam, awayTeam, ...score }) => (
   <Segment>
     <Grid centered columns={3}>
