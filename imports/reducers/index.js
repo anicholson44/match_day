@@ -22,6 +22,12 @@ export default (state = {}, action) => {
       }
       return { ...state, showScores };
     }
+    case 'SHOW_DIMMER': {
+      return { ...state, showDimmer: true };
+    }
+    case 'HIDE_DIMMER': {
+      return { ...state, showDimmer: false };
+    }
     default:
       return state;
   }

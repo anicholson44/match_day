@@ -1,11 +1,10 @@
-import { fetchMatches } from '../services/fetchData';
+import { fetchMatchesWithDimmer } from '../services/fetchData';
 
 const wrapWithFetchMatches = (actionCreator) => (payload) =>
   (dispatch, getState) => {
     const state = getState();
-    return fetchMatches({...state, ...payload}).then((matches) => (
-      dispatch(actionCreator({...payload, matches}))
-    ))
+    return dispatch(fetchMatchesWithDimmer({...state, ...payload}))
+      .then((matches) => dispatch(actionCreator({...payload, matches})))
   };
 
 export const updateSelectCompetitions = wrapWithFetchMatches((payload) => ({
@@ -22,3 +21,11 @@ export const changeShowScore = (payload) => ({
   type: 'CHANGE_SHOW_SCORE',
   payload
 });
+
+export const showDimmer = {
+  type: 'SHOW_DIMMER'
+};
+
+export const hideDimmer = {
+  type: 'HIDE_DIMMER'
+};

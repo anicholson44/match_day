@@ -1,21 +1,56 @@
 import arrayToObject from './arrayToObject';
 import formatDate from './formatDate';
+import { showDimmer, hideDimmer } from '../actions';
 
-// TODO: loading dimmer when making HTTP request
 // TODO: move to server-side and secure apiKey
 const apiKey = '64ea00257ef94c51ae6bcd8ccd27a857';
 const baseUrl = 'http://api.football-data.org/v2/';
-const defaultFetchOptions = {
-  mode: 'cors',
-  headers: {
-    'X-Auth-Token': apiKey
-  }
+
+const fetchFromApi = (url) =>
+  fetch(url, { mode: 'cors', headers: { 'X-Auth-Token': apiKey } })
+    .then((response) => response.json());
+
+const fetchWithDimmer = (url) =>
+  (dispatch) => {
+    dispatch(showDimmer);
+    return fetchFromApi(url)
+      .then((response) => {
+        dispatch(hideDimmer);
+        return response;
+      })
+      .catch((error) => {
+        console.error(error);
+        dispatch(hideDimmer);
+        return error;
+      })
+  };
+
+const fetchCompetitions = (fetchFunction) =>
+  fetchFunction(baseUrl + 'competitions')
+    .then(({ competitions }) => arrayToObject(competitions));
+
+export const fetchCompetitionsWithDimmer = (dispatch) =>
+  fetchCompetitions((url) => dispatch(fetchWithDimmer(url)));
+
+export const fetchCompetitionsInit = () =>
+  fetchCompetitions(fetchFromApi);
+
+const fetchMatches = ({ selectedCompetitions = [], startDate = new Date(), endDate = new Date() }, fetchFunction) => {
+  const queryString = [
+    `competitions=${selectedCompetitions.join(',')}`,
+    `dateFrom=${formatDate(startDate)}`,
+    `dateTo=${formatDate(endDate)}`
+  ].join('&');
+  return fetchFunction(
+    baseUrl + 'matches?' + queryString)
+    .then(transformMatchesResponse);
 };
 
-export const fetchCompetitions = () =>
-  fetch(baseUrl + 'competitions', defaultFetchOptions)
-    .then((response) => response.json())
-    .then(({ competitions }) => arrayToObject(competitions));
+export const fetchMatchesInit = (filters) =>
+  fetchMatches(filters, fetchFromApi);
+
+export const fetchMatchesWithDimmer = (filters) => (dispatch) =>
+  fetchMatches(filters, (url) => dispatch(fetchWithDimmer(url)));
 
 // Raw score looks like the following:
 // "score": {
@@ -66,15 +101,3 @@ const transformMatchesResponse = ({ matches }) =>
       score: getFinalScore(score)
     }
   }));
-
-export const fetchMatches = ({ selectedCompetitions = [], startDate = new Date(), endDate = new Date() }) => {
-  const queryString = [
-    `competitions=${selectedCompetitions.join(',')}`,
-    `dateFrom=${formatDate(startDate)}`,
-    `dateTo=${formatDate(endDate)}`
-  ].join('&');
-  return fetch(
-    baseUrl + 'matches?' + queryString,
-    defaultFetchOptions).then((response) => response.json())
-    .then(transformMatchesResponse);
-};
