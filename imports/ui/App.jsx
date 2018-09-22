@@ -4,29 +4,24 @@ import {
   Container,
   Segment,
   Header,
-  Grid,
-  Dimmer,
-  Loader
+  Grid
 } from 'semantic-ui-react';
 import CompetitionsDropdown from './containers/CompetitionsDropdown';
 import DateRange from './containers/DateRange';
 import Matches from './containers/Matches';
 import ChangeShowAllScores from './containers/ChangeShowAllScores';
+import LoadingDimmer from './components/LoadingDimmer';
 
 const mapStateToProps = ({ showDimmer }) => ({ showDimmer });
 
 const App = ({ showDimmer }) => (
-  <Dimmer.Dimmable as={(props) => <div {...props} />} dimmed={showDimmer}>
-    <Dimmer simple active={showDimmer} />
+  <>
     <Container>
       <Segment>
         <Header as='h2'>Competitions</Header>
         <CompetitionsDropdown />
       </Segment>
       <Segment>
-        <Loader size='massive' active={showDimmer}>
-          Loading...
-        </Loader>
         <Header as='h2'>Dates</Header>
         <DateRange />
       </Segment>
@@ -42,7 +37,8 @@ const App = ({ showDimmer }) => (
         <Matches />
       </Segment>
     </Container>
-  </Dimmer.Dimmable>
+    <LoadingDimmer show={showDimmer} />
+  </>
 );
 
 export default connect(mapStateToProps)(App);
