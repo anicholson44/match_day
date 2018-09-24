@@ -75,7 +75,8 @@ export const fetchMatchesWithDimmer = (filters) => (dispatch) =>
 // }
 const getFinalScore = (rawScore) => ((periods) => (
   periods.reduce((score, period) => {
-    if (rawScore[period]['homeTeam']) {
+    if (rawScore[period]['homeTeam'] !== null
+      && typeof rawScore[period]['homeTeam'] !== 'undefined') {
       return rawScore[period];
     } else return score;
   }, null)
