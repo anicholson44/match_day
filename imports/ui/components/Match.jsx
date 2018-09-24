@@ -3,17 +3,18 @@ import T from 'prop-types';
 import { Segment, Grid } from 'semantic-ui-react';
 import Score from './Score';
 import Team from './Team';
+import { timeOfDay } from '../../services/formatDate';
 
-// TODO: display date
 // TODO: only render Score for matches that have a score
-const Match = ({ homeTeam, awayTeam, ...score }) => (
+const Match = ({ homeTeam, awayTeam, time, ...score }) => (
   <Segment>
     <Grid centered columns={3}>
       <Grid.Row>
         <Grid.Column>
           <Team name={homeTeam} />
         </Grid.Column>
-        <Grid.Column>
+        <Grid.Column textAlign='center'>
+          {time}
         </Grid.Column>
         <Grid.Column>
           <Team name={awayTeam} />

@@ -36,7 +36,6 @@ const ScoreComponent = (showScore) => showScore ? ViewableScore : HiddenScore;
 const Score = ({ showScore, score, id }) =>
   React.createElement(ScoreComponent(showScore), { ...score, id });
 
-
 Score.propTypes = {
   score: T.shape({
     homeTeam: scorePropType.isRequired,

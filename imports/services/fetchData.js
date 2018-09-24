@@ -1,5 +1,5 @@
-import arrayToObject from './arrayToObject';
-import formatDate from './formatDate';
+import { arrayToObjectUsingIds } from './arrayToObject';
+import { isoFormatDate, prettyFormatDate, timeOfDay } from './formatDate';
 import { showDimmer, hideDimmer } from '../actions';
 
 // TODO: move to server-side and secure apiKey
@@ -27,7 +27,7 @@ const fetchWithDimmer = (url) =>
 
 const fetchCompetitions = (fetchFunction) =>
   fetchFunction(baseUrl + 'competitions')
-    .then(({ competitions }) => arrayToObject(competitions));
+    .then(({ competitions }) => arrayToObjectUsingIds(competitions));
 
 export const fetchCompetitionsWithDimmer = (dispatch) =>
   fetchCompetitions((url) => dispatch(fetchWithDimmer(url)));
@@ -38,8 +38,8 @@ export const fetchCompetitionsInit = () =>
 const fetchMatches = ({ selectedCompetitions = [], startDate = new Date(), endDate = new Date() }, fetchFunction) => {
   const queryString = [
     `competitions=${selectedCompetitions.join(',')}`,
-    `dateFrom=${formatDate(startDate)}`,
-    `dateTo=${formatDate(endDate)}`
+    `dateFrom=${isoFormatDate(startDate)}`,
+    `dateTo=${isoFormatDate(endDate)}`
   ].join('&');
   return fetchFunction(
     baseUrl + 'matches?' + queryString)
@@ -82,7 +82,7 @@ const getFinalScore = (rawScore) => ((periods) => (
 ))(['halfTime', 'fullTime', 'extraTime', 'penalties']);
 
 const transformMatchesResponse = ({ matches }) =>
-  arrayToObject(matches.map((match) => {
+  arrayToObjectUsingIds(matches.map((match) => {
     // TODO: add goals, lineups, bookings, etc.
     const {
       id,
@@ -95,7 +95,8 @@ const transformMatchesResponse = ({ matches }) =>
     return {
       id,
       competition: competition.id,
-      utcDate,
+      date: prettyFormatDate(utcDate),
+      time: timeOfDay(utcDate),
       homeTeam: homeTeam.name,
       awayTeam: awayTeam.name,
       score: getFinalScore(score)

@@ -5,4 +5,8 @@ const mapStateToProps = ({ showScores }, { id }) => ({
   showScore: showScores[id] !== false && (showScores.all || showScores[id])
 });
 
-export default connect(mapStateToProps, undefined)(Match);
+const MatchContainer = connect(mapStateToProps, undefined)(Match);
+
+MatchContainer.propTypes = Match.propTypes;
+
+export default MatchContainer;
