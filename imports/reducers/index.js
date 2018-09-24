@@ -3,6 +3,12 @@
 export default (state = {}, action) => {
   switch (action.type) {
     // TODO: extract action types to constants
+    case 'SET_MATCHES': {
+      return { ...state, matches: action.payload };
+    }
+    case 'SET_COMPETITIONS': {
+      return { ...state, competitions: action.payload };
+    }
     case 'UPDATE_SELECTED_COMPETITIONS': {
       const { selectedCompetitions, matches } = action.payload;
       return { ...state, selectedCompetitions, matches };

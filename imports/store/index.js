@@ -7,6 +7,8 @@ import thunk from 'redux-thunk';
 import reducer from '../reducers';
 
 export const initialState = {
+  competitions: {},
+  matches: {},
   selectedCompetitions: [
     2021,
     2014,

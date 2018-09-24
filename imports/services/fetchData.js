@@ -32,9 +32,6 @@ const fetchCompetitions = (fetchFunction) =>
 export const fetchCompetitionsWithDimmer = (dispatch) =>
   fetchCompetitions((url) => dispatch(fetchWithDimmer(url)));
 
-export const fetchCompetitionsInit = () =>
-  fetchCompetitions(fetchFromApi);
-
 const fetchMatches = ({ selectedCompetitions = [], startDate = new Date(), endDate = new Date() }, fetchFunction) => {
   const queryString = [
     `competitions=${selectedCompetitions.join(',')}`,
@@ -45,9 +42,6 @@ const fetchMatches = ({ selectedCompetitions = [], startDate = new Date(), endDa
     baseUrl + 'matches?' + queryString)
     .then(transformMatchesResponse);
 };
-
-export const fetchMatchesInit = (filters) =>
-  fetchMatches(filters, fetchFromApi);
 
 export const fetchMatchesWithDimmer = (filters) => (dispatch) =>
   fetchMatches(filters, (url) => dispatch(fetchWithDimmer(url)));
