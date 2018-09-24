@@ -1,4 +1,5 @@
 import React from 'react';
+import CancelablePromise, { PromiseCanceledError } from '../../services/CancelablePromise';
 
 class Spinner extends React.PureComponent {
   constructor(props) {
@@ -8,14 +9,22 @@ class Spinner extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    this.unmounted = true;
+    this._scheduleTextUpdatePromise.cancel();
   }
 
   scheduleTextUpdate() {
-    setTimeout(() => {
+    this._scheduleTextUpdatePromise = new CancelablePromise((resolve) =>
+      setTimeout(() => resolve(), 500));
+    this._scheduleTextUpdatePromise.then(() => {
       const numberOfPeriods = this.props.active ? (this.state.numberOfPeriods + 1) % 4 : 0;
-      if (!this.unmounted) { this.setState({ numberOfPeriods }) }
-    }, 500);
+      this.setState({ numberOfPeriods });
+    }).catch((e) => {
+      if (e instanceof PromiseCanceledError) {
+        // do nothing if promise is canceled
+      } else {
+        throw e;
+      }
+    });
   }
 
   render() {
