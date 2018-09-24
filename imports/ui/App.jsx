@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import {
   Container,
   Segment,
@@ -10,35 +9,32 @@ import CompetitionsDropdown from './containers/CompetitionsDropdown';
 import DateRange from './containers/DateRange';
 import Matches from './containers/Matches';
 import ChangeShowAllScores from './containers/ChangeShowAllScores';
-import LoadingDimmer from './components/LoadingDimmer';
+import makeLoadable from './containers/Loadable';
 
-const mapStateToProps = ({ showDimmer }) => ({ showDimmer });
+const Loadable = makeLoadable('showDimmer');
 
-const App = ({ showDimmer }) => (
-  <>
-    <Container>
-      <Segment>
-        <Header as='h2'>Competitions</Header>
-        <CompetitionsDropdown />
-      </Segment>
-      <Segment>
-        <Header as='h2'>Dates</Header>
-        <DateRange />
-      </Segment>
-      <Segment>
-        <Grid columns={2}>
-          <Grid.Column>
-            <Header as='h2'>Matches</Header>
-          </Grid.Column>
-          <Grid.Column textAlign='right'>
-            <ChangeShowAllScores />
-          </Grid.Column>
-        </Grid>
-        <Matches />
-      </Segment>
-    </Container>
-    <LoadingDimmer show={showDimmer} />
-  </>
+const App = () => (
+  <Container>
+    <Segment>
+      <Header as='h2'>Competitions</Header>
+      <CompetitionsDropdown />
+    </Segment>
+    <Segment>
+      <Header as='h2'>Dates</Header>
+      <DateRange />
+    </Segment>
+    <Segment>
+      <Grid columns={2}>
+        <Grid.Column>
+          <Header as='h2'>Matches</Header>
+        </Grid.Column>
+        <Grid.Column textAlign='right'>
+          <ChangeShowAllScores />
+        </Grid.Column>
+      </Grid>
+      <Matches />
+    </Segment>
+  </Container>
 );
 
-export default connect(mapStateToProps)(App);
+export default () => <Loadable render={App} />;
